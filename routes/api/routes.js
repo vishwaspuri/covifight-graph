@@ -5,7 +5,7 @@ var uuid = require('uuid')
 
 
 // Driver setup
-var driver = neo4j.driver("bolt://35.174.207.184:34580", neo4j.auth.basic("neo4j", "touches-numeral-counter"));
+var driver = neo4j.driver("", neo4j.auth.basic("", ""));
 var session = driver.session();
 
 
