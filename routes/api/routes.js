@@ -5,7 +5,7 @@ var uuid = require('uuid')
 
 
 // Driver setup
-var driver = neo4j.driver("'bolt://3.83.18.124:34344", neo4j.auth.basic("neo4j", "selection-gases-chapter"));
+var driver = neo4j.driver("", neo4j.auth.basic("", ""));
 var session = driver.session();
 
 
