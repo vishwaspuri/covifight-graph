@@ -184,10 +184,50 @@ router.post('/mark-positive/',(req,res)=>{
         });
 });
 
+// Connecting different users
+router.post('/connect-multiple-users/', async (req, res) => {
+    const person_id = req.body.id;
+    const connections = req.body.connections;
 
+    for (const connection of connections) {
+        await session
+            .run("MATCH (a:Person{uuid: $person1_id}),(b:Person{uuid: $person2_id}) MERGE (a)-[r:CONNECTED_WITH{time_spent: $time}]->(b)", {
+                person1_id: person_id,
+                person2_id: connection.Id,
+                time: connection.time
+            })
+            .then((result) => {
+                ;
+            })
+            .catch((error) => {
+                console.log(error);
+                res.status(400).send(error);
+                return ;
+            });
+    }
 
+    res.send({"message": "All connections are successfully created."})
 
+})
 
+// n closest nodes to a given node 
+router.get('/close_relation/:id/:n', async (req, res) => {
+    const id = req.params.id;
+    const n = parseInt(req.params.n);
 
+    await session
+        .run("MATCH (a:{uuid: $id})-[*1...$n]->(c) RETURN DISTINCT c", {
+            id: id,
+            n: n
+        })
+        .then((result) => {
+            console.log(result);
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+    
+    res.send({"message": "completed"})
+})
 
 module.exports= router;
